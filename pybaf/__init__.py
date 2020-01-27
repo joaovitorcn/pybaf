@@ -196,9 +196,9 @@ class pybaf():
 
                 df_final = df_final.append(df)
 
-                lista_origin = list(origin[self.origin_id])
 
-                df_final = self._attach_ids(df_final, lista_origin, lista_destination)
+
+            df_final = self._attach_ids(df_final, lista_origin, lista_destination)
 
 
         return df_final
