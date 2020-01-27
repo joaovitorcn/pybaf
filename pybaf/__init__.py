@@ -3,6 +3,7 @@ import requests
 import json
 
 
+
 class pybaf():
 
     def __init__(self, key: 'api key str' = None):
