@@ -1,3 +1,5 @@
+[![PyPI version](https://badge.fury.io/py/pybaf.svg)](https://badge.fury.io/py/pybaf)
+
 # Python Bing API Facilitator 
 
 Python Bing API Facilitator is a Python library created to simplify the usage of the bing api for distance between two geographic coordination. The project is on current development and future methods may be implemented 
