@@ -11,8 +11,9 @@ setuptools.setup(
     description="Python Distance Calculator Bing Api facilitator",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/joaovitocn/APIdistances",
+    url="https://github.com/joaovitocn/pybaf",
     packages=setuptools.find_packages(),
+    install_requires=['Pandas','request','json']
     classifiers=[
         "Programming Language :: Python :: 3",
         "Operating System :: OS Independent",
