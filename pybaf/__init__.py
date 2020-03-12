@@ -3,6 +3,7 @@ import requests
 import json
 
 
+
 class pybaf():
 
     def __init__(self, key: 'api key str' = None):
@@ -10,7 +11,9 @@ class pybaf():
         if key is None:
             raise ValueError('Key must be inserted')
         self.api_key = key
-
+    def __version__():
+        version = '0.0.2'
+        print(version)
     # checks that will ensure correct variable type is passed
     def _check_error(self, df_destination, df_origin, destination_id, origin_id):
         self._check_if_df(df_destination)
