@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="pybaf", # Replace with your own username
-    version="0.1.7",
+    version="0.1.9",
     author="joaovitocn",
     author_email="joaovitor.cn@gmail.com",
     description="Python Distance Calculator Bing Api facilitator",
