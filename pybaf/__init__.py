@@ -11,7 +11,9 @@ class pybaf():
         if key is None:
             raise ValueError('Key must be inserted')
         self.api_key = key
-
+    def __version__():
+        version = '0.0.2'
+        print(version)
     # checks that will ensure correct variable type is passed
     def _check_error(self, df_destination, df_origin, destination_id, origin_id):
         self._check_if_df(df_destination)
@@ -165,11 +167,11 @@ class pybaf():
         df_final = pd.DataFrame()
         check = self._check_error(df_destination, df_origin, destination_id, origin_id)
 
-        lista_destination = list(df_origin[self.destination_id])
-        lista_origin = list(df_destination[self.origin_id])
+        lista_destination = list(df_destination[self.destination_id])
+        lista_origin = list(df_origin[self.origin_id])
 
-        origins = [x for x in self._get_lat_lon(df_destination)]
-        destinations = self._get_lat_lon(df_origin)
+        origins = [x for x in self._get_lat_lon(df_origin)]
+        destinations = self._get_lat_lon(df_destination)
 
         var1, origins, destinations = self._split_origin_destination(origins, destinations)
 
@@ -194,8 +196,10 @@ class pybaf():
 
                 df_final = df_final.append(df)
 
+                lista_origin = list(origin[self.origin_id])
+
                 df_final = self._attach_ids(df_final, lista_origin, lista_destination)
-                df_final = self._attach_ids(df_final, lista_origin, lista_destination)
+
 
         return df_final
 
