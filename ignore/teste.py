@@ -6,7 +6,7 @@ key = '55TGKKBnP79cJxveQeOm~MIrRMhh_wJEiCCmMumvvJA~AtsupJEjwEsphI6j3AFjFZ9oTID2x
 pybaf = pybaf(key=key)
 
 print(pybaf)
-cidades = pd.read_csv('cidades.csv',encoding='iso 8859-1',delimiter=';')
+cidades = pd.read_csv('cidades.csv', encoding='iso 8859-1', delimiter=';')
 cidades['latitude'] = cidades['latitude'].str.replace(',','.')
 cidades['longitude'] = cidades['longitude'].str.replace(',','.')
 
