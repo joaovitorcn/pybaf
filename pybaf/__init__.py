@@ -3,6 +3,7 @@ import requests
 import json
 
 
+
 class pybaf():
 
     def __init__(self, key: 'api key str' = None):
@@ -10,7 +11,9 @@ class pybaf():
         if key is None:
             raise ValueError('Key must be inserted')
         self.api_key = key
-
+    def __version__():
+        version = '0.0.2'
+        print(version)
     # checks that will ensure correct variable type is passed
     def _check_error(self, df_destination, df_origin, destination_id, origin_id):
         self._check_if_df(df_destination)
@@ -77,7 +80,7 @@ class pybaf():
 
     # will split pd.DataFrame to ensure API limit of combinations is respect
 
-    def _split_origin_destination(self, origins, destinations):
+    def _split_origin_destination(self, origins, destinations,lista_origin):
 
         number = 2500
         len_origins = len(origins)
@@ -90,10 +93,11 @@ class pybaf():
         else:
             n_origins = number // len_destinations
             teste = [origins[x:(x + n_origins)] for x in range(0, len(origins), n_origins)]
+            names = [lista_origin[x:(x + n_origins)] for x in range(0, len(lista_origin), n_origins)]
             print('loops: {} || origens: {} || destinations: {} || limite ={}'
                   .format(len(teste), len(origins), len(destinations), number))
 
-            return False, teste, destinations
+            return False, teste, destinations,names
 
     # create text that will be used on api request
     def _create_text(self, origins, destinations):
@@ -170,7 +174,7 @@ class pybaf():
         origins = [x for x in self._get_lat_lon(df_origin)]
         destinations = self._get_lat_lon(df_destination)
 
-        var1, origins, destinations = self._split_origin_destination(origins, destinations)
+        var1, origins, destinations,lista_origin = self._split_origin_destination(origins, destinations,lista_origin)
 
         if var1:
             payload = self._create_text(origins, destinations)
@@ -192,10 +196,11 @@ class pybaf():
                 df = self._data_to_df(json_text)
 
                 df_final = df_final.append(df)
+                origin_name = lista_origin[origins.index(origin)]
 
-                lista_origin = list(origin[self.origin_id])
 
-                df_final = self._attach_ids(df_final, lista_origin, lista_destination)
+
+                df_final = self._attach_ids(df_final, origin_name, lista_destination)
 
 
         return df_final
