@@ -142,3 +142,6 @@ gen
 
 !/.gitignore
 !/ignore/
+!/ignore/
+!/ignore/
+!/.idea/
