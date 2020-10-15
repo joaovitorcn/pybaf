@@ -1,3 +1,5 @@
+# versÃ£o com start time
+
 import pandas as pd
 import requests
 import json
@@ -42,7 +44,7 @@ class pybaf():
 
     def _data_to_df(self, data):
         number = len(data['resourceSets'][0]['resources'][0]['results'])
-        df_data = pd.DataFrame(columns=[self.destination_id, self.origin_id, "distancia", "duracao"])
+        df_data = pd.DataFrame(columns=[ self.origin_id,self.destination_id, "distancia", "duracao"])
         for x in range(0, (number)):
             id_origem = data['resourceSets'][0]['resources'][0]['results'][x]['originIndex']
             id_destination = data['resourceSets'][0]['resources'][0]['results'][x]['destinationIndex']
@@ -82,7 +84,7 @@ class pybaf():
 
     def _split_origin_destination(self, origins, destinations,lista_origin):
 
-        number = 2500
+        number = self.api_limit
         len_origins = len(origins)
         len_destinations = len(destinations)
 
@@ -104,7 +106,7 @@ class pybaf():
 
         origins_rows = len(origins)
         rows = len(destinations)
-
+        print(self.starttime)
         if len(origins) == 1:
 
             teste3 = {
@@ -120,6 +122,8 @@ class pybaf():
                 ],
                 "travelMode": 'driving',
             }
+            
+           
 
         else:
             teste3 = {
@@ -134,6 +138,7 @@ class pybaf():
                 },
                 ],
                 "travelMode": 'driving',
+                "startTime":"",
             }
             for x in range(1, (origins_rows)):
                 teste3['origins'].append(
@@ -144,26 +149,29 @@ class pybaf():
             teste3['destinations'].append(
                 {'latitude': destinations[x][0],
                  'longitude': destinations[x][1]}
-            )
+            )   
 
         return teste3
 
-    # attach the api results to the IDs from original pd.DataFrames
+      # attach the api results to the IDs from original pd.DataFrames
     def _attach_ids(self, df_final, lista_origin, lista_destination):
 
-        for x in range(0, len(lista_origin)):
-            df_final[self.destination_id] = df_final[self.origin_id].replace(x, lista_origin[x])
         for x in range(0, len(lista_destination)):
-            df_final[self.origin_id] = df_final[self.destination_id].replace(x, lista_destination[x])
+            df_final[self.destination_id] = df_final[self.destination_id].replace(x, lista_destination[x])
+        for x in range(0, len(lista_origin)):
+            df_final[self.origin_id] = df_final[self.origin_id].replace(x, lista_origin[x])
 
         return df_final
 
     # distance matrix will return the combinations of distance between df_destination and df_origin
 
-    def distance_matrix(self, df_destination, df_origin, destination_id, origin_id):
+    def distance_matrix(self, df_destination, df_origin, destination_id, origin_id,start_time,limit = 2500):
 
+        self.api_limit = limit
         self.destination_id = destination_id
         self.origin_id = origin_id
+        self.starttime = start_time
+    
 
         df_final = pd.DataFrame()
         check = self._check_error(df_destination, df_origin, destination_id, origin_id)
@@ -174,14 +182,18 @@ class pybaf():
         origins = [x for x in self._get_lat_lon(df_origin)]
         destinations = self._get_lat_lon(df_destination)
 
+
+
         var1, origins, destinations,lista_origin = self._split_origin_destination(origins, destinations,lista_origin)
+        
 
         if var1:
             payload = self._create_text(origins, destinations)
             json_text = self._post_request(payload)
-
+    
             df = self._data_to_df(json_text)
             df_final = df_final.append(df)
+            
 
             df_final = self._attach_ids(df_final, lista_origin, lista_destination)
 
@@ -225,5 +237,3 @@ class pybaf():
         df_groupby = df_groupby.drop(columns='level_2')
 
         result = pd.merge(df_groupby, df_final, on=[origin_id, value], how='inner')
-
-        return result
