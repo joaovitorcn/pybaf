@@ -19,8 +19,8 @@ class pybaf():
         self._check_if_df(df_destination)
         self._check_if_df(df_origin)
 
-        self._check_if_column_in_df(df_destination, origin_id, 'df_destination')
-        self._check_if_column_in_df(df_origin, destination_id, 'df_origin')
+        self._check_if_column_in_df(df_destination, destination_id, 'df_destination')
+        self._check_if_column_in_df(df_origin, origin_id, 'df_origin')
 
         self._check_if_column_in_df(df_destination, 'latitude', 'df_destination')
         self._check_if_column_in_df(df_origin, 'latitude', 'df_origin')
