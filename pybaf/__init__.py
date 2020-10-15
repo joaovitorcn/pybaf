@@ -107,50 +107,101 @@ class pybaf():
         origins_rows = len(origins)
         rows = len(destinations)
         print(self.starttime)
-        if len(origins) == 1:
-
-            teste3 = {
-                "origins": [{
-                    "latitude": origins[0],
-                    "longitude": origins[1]
+        if self.starttime == 0:
+            if len(origins) == 1:
+                                                        
+                teste3 = {
+                    "origins": [{
+                        "latitude": origins[0],
+                        "longitude": origins[1]
+                    }
+                    ],
+                    "destinations": [{
+                        "latitude": destinations[0][0],
+                        "longitude": destinations[0][1]
+                    },
+                    ],
+                    "travelMode": 'driving',
                 }
-                ],
-                "destinations": [{
-                    "latitude": destinations[0][0],
-                    "longitude": destinations[0][1]
-                },
-                ],
-                "travelMode": 'driving',
-            }
+                
+               
+    
+            else:
+                teste3 = {
+                    "origins": [{
+                        "latitude": origins[0][0],
+                        "longitude": origins[0][1]
+                    }
+                    ],
+                    "destinations": [{
+                        "latitude": destinations[0][0],
+                        "longitude": destinations[0][1]
+                    },
+                    ],
+                    "travelMode": 'driving',
+               
+                }
+                for x in range(1, (origins_rows)):
+                    teste3['origins'].append(
+                        {'latitude': origins[x][0],
+                         'longitude': origins[x][1]})
+    
+            for x in range(1, rows):
+                teste3['destinations'].append(
+                    {'latitude': destinations[x][0],
+                     'longitude': destinations[x][1]}
+                )   
+                                                                                                                        
+            
+        else:                   
+            
+            if len(origins) == 1:
+
+                teste3 = {
+                    "origins": [{
+                        "latitude": origins[0],
+                        "longitude": origins[1]
+                    }
+                    ],
+                    "destinations": [{
+                        "latitude": destinations[0][0],
+                        "longitude": destinations[0][1]
+                    },
+                    ],
+                    "travelMode": 'driving',
+                    "startTime" : self.starttime,
+                }
             
            
-
-        else:
-            teste3 = {
-                "origins": [{
-                    "latitude": origins[0][0],
-                    "longitude": origins[0][1]
+                    
+            else:
+                teste3 = {
+                    "origins": [{
+                        "latitude": origins[0][0],
+                        "longitude": origins[0][1]
+                    }
+                    ],
+                    "destinations": [{
+                        "latitude": destinations[0][0],
+                        "longitude": destinations[0][1]
+                    },
+                    ],
+                    "travelMode": 'driving',
+                    "startTime" : self.starttime,
                 }
-                ],
-                "destinations": [{
-                    "latitude": destinations[0][0],
-                    "longitude": destinations[0][1]
-                },
-                ],
-                "travelMode": 'driving',
-                "startTime":"",
-            }
-            for x in range(1, (origins_rows)):
-                teste3['origins'].append(
-                    {'latitude': origins[x][0],
-                     'longitude': origins[x][1]})
-
-        for x in range(1, rows):
-            teste3['destinations'].append(
-                {'latitude': destinations[x][0],
-                 'longitude': destinations[x][1]}
-            )   
-
+                
+                for x in range(1, (origins_rows)):
+                    teste3['origins'].append(
+                        {'latitude': origins[x][0],
+                         'longitude': origins[x][1]})
+    
+            for x in range(1, rows):
+                teste3['destinations'].append(
+                    {'latitude': destinations[x][0],
+                     'longitude': destinations[x][1]}
+                )   
+    
+       
         return teste3
 
       # attach the api results to the IDs from original pd.DataFrames
@@ -165,7 +216,7 @@ class pybaf():
 
     # distance matrix will return the combinations of distance between df_destination and df_origin
 
-    def distance_matrix(self, df_destination, df_origin, destination_id, origin_id,start_time,limit = 2500):
+    def distance_matrix(self, df_destination, df_origin, destination_id, origin_id,start_time=0,limit = 2500):
 
         self.api_limit = limit
         self.destination_id = destination_id
@@ -190,7 +241,7 @@ class pybaf():
         if var1:
             payload = self._create_text(origins, destinations)
             json_text = self._post_request(payload)
-    
+            
             df = self._data_to_df(json_text)
             df_final = df_final.append(df)
             
@@ -204,7 +255,7 @@ class pybaf():
                 payload = self._create_text(origin, destinations)
 
                 json_text = self._post_request(payload)
-
+              
                 df = self._data_to_df(json_text)
 
                 df_final = df_final.append(df)
