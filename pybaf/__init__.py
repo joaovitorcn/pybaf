@@ -236,35 +236,38 @@ class pybaf():
 
 
         var1, origins, destinations,lista_origin = self._split_origin_destination(origins, destinations,lista_origin)
-        
-
-        if var1:
-            payload = self._create_text(origins, destinations)
-            json_text = self._post_request(payload)
+          
+        try:
             
-            df = self._data_to_df(json_text)
-            df_final = df_final.append(df)
-            
-
-            df_final = self._attach_ids(df_final, lista_origin, lista_destination)
-
-        else:
-
-            for origin in origins:
-                print('loop number {}'.format(origins.index(origin)))
-                payload = self._create_text(origin, destinations)
-
+            if var1:
+                payload = self._create_text(origins, destinations)
                 json_text = self._post_request(payload)
-              
+                
                 df = self._data_to_df(json_text)
-
                 df_final = df_final.append(df)
-                origin_name = lista_origin[origins.index(origin)]
-
-
-
-                df_final = self._attach_ids(df_final, origin_name, lista_destination)
-
+                
+    
+                df_final = self._attach_ids(df_final, lista_origin, lista_destination)
+    
+            else:
+    
+                for origin in origins:
+                    print('loop number {}'.format(origins.index(origin)))
+                    payload = self._create_text(origin, destinations)
+    
+                    json_text = self._post_request(payload)
+                  
+                    df = self._data_to_df(json_text)
+    
+                    df_final = df_final.append(df)
+                    origin_name = lista_origin[origins.index(origin)]
+    
+    
+    
+                    df_final = self._attach_ids(df_final, origin_name, lista_destination)
+        except:
+            print("An error has eccured, here's the json output for debug")
+            print(json_text)
 
         return df_final
 
