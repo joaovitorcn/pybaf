@@ -89,7 +89,7 @@ class pybaf():
         combinations = len_origins * len_destinations
 
         if combinations < number:
-            return True, origins, destinations
+            return True, origins, destinations, lista_origin
         else:
             n_origins = number // len_destinations
             teste = [origins[x:(x + n_origins)] for x in range(0, len(origins), n_origins)]
