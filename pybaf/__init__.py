@@ -152,9 +152,9 @@ class pybaf():
     def _attach_ids(self, df_final, lista_origin, lista_destination):
 
         for x in range(0, len(lista_origin)):
-            df_final[self.destination_id] = df_final[self.destination_id].replace(x, lista_origin[x])
+            df_final[self.destination_id] = df_final[self.origin_id].replace(x, lista_origin[x])
         for x in range(0, len(lista_destination)):
-            df_final[self.origin_id] = df_final[self.origin_id].replace(x, lista_destination[x])
+            df_final[self.origin_id] = df_final[self.destination_id].replace(x, lista_destination[x])
 
         return df_final
 
