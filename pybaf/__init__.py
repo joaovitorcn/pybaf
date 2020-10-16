@@ -14,7 +14,7 @@ class pybaf():
             raise ValueError('Key must be inserted')
         self.api_key = key
     def __version__():
-        version = '0.0.2'
+        version = '2.0.4'
         print(version)
     # checks that will ensure correct variable type is passed
     def _check_error(self, df_destination, df_origin, destination_id, origin_id):
@@ -108,7 +108,7 @@ class pybaf():
         rows = len(destinations)
         if self.starttime == 0:
             if len(origins) == 1:
-                                                        
+
                 teste3 = {
                     "origins": [{
                         "latitude": origins[0][0],
@@ -122,9 +122,9 @@ class pybaf():
                     ],
                     "travelMode": 'driving',
                 }
-                
-               
-    
+
+
+
             else:
                 teste3 = {
                     "origins": [{
@@ -138,28 +138,28 @@ class pybaf():
                     },
                     ],
                     "travelMode": 'driving',
-               
+
                 }
                 for x in range(1, (origins_rows)):
                     teste3['origins'].append(
                         {'latitude': origins[x][0],
                          'longitude': origins[x][1]})
-    
+
             for x in range(1, rows):
                 teste3['destinations'].append(
                     {'latitude': destinations[x][0],
                      'longitude': destinations[x][1]}
-                )   
-                                                                                                                        
-            
-        else:                   
-            
+                )
+
+
+        else:
+
             if len(origins) == 1:
 
                 teste3 = {
                     "origins": [{
-                        "latitude": origins[0],
-                        "longitude": origins[1]
+                        "latitude": origins[0][0],
+                        "longitude": origins[0][1]
                     }
                     ],
                     "destinations": [{
@@ -170,9 +170,9 @@ class pybaf():
                     "travelMode": 'driving',
                     "startTime" : self.starttime,
                 }
-            
-           
-                    
+
+
+
             else:
                 teste3 = {
                     "origins": [{
@@ -188,19 +188,19 @@ class pybaf():
                     "travelMode": 'driving',
                     "startTime" : self.starttime,
                 }
-                
+
                 for x in range(1, (origins_rows)):
                     teste3['origins'].append(
                         {'latitude': origins[x][0],
                          'longitude': origins[x][1]})
-    
+
             for x in range(1, rows):
                 teste3['destinations'].append(
                     {'latitude': destinations[x][0],
                      'longitude': destinations[x][1]}
-                )   
-    
-       
+                )
+
+
         return teste3
 
       # attach the api results to the IDs from original pd.DataFrames
@@ -221,7 +221,7 @@ class pybaf():
         self.destination_id = destination_id
         self.origin_id = origin_id
         self.starttime = start_time
-    
+
 
         df_final = pd.DataFrame()
         check = self._check_error(df_destination, df_origin, destination_id, origin_id)
@@ -235,34 +235,34 @@ class pybaf():
 
 
         var1, origins, destinations,lista_origin = self._split_origin_destination(origins, destinations,lista_origin)
-          
+
         try:
-            
+
             if var1:
                 payload = self._create_text(origins, destinations)
                 json_text = self._post_request(payload)
-                
+
                 df = self._data_to_df(json_text)
                 df_final = df_final.append(df)
-                
-    
+
+
                 df_final = self._attach_ids(df_final, lista_origin, lista_destination)
-    
+
             else:
-    
+
                 for origin in origins:
                     print('loop number {}'.format(origins.index(origin)))
                     payload = self._create_text(origin, destinations)
-    
+
                     json_text = self._post_request(payload)
-                  
+
                     df = self._data_to_df(json_text)
-    
+
                     df_final = df_final.append(df)
                     origin_name = lista_origin[origins.index(origin)]
-    
-    
-    
+
+
+
                     df_final = self._attach_ids(df_final, origin_name, lista_destination)
         except:
             print("An error has eccured, here's the json output for debug")
