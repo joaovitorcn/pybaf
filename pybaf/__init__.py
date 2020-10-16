@@ -111,8 +111,8 @@ class pybaf():
                                                         
                 teste3 = {
                     "origins": [{
-                        "latitude": origins[0],
-                        "longitude": origins[1]
+                        "latitude": origins[0][0],
+                        "longitude": origins[0][1]
                     }
                     ],
                     "destinations": [{
@@ -158,8 +158,8 @@ class pybaf():
 
                 teste3 = {
                     "origins": [{
-                        "latitude": origins[0][0],
-                        "longitude": origins[0][1]
+                        "latitude": origins[0],
+                        "longitude": origins[1]
                     }
                     ],
                     "destinations": [{
@@ -252,7 +252,6 @@ class pybaf():
     
                 for origin in origins:
                     print('loop number {}'.format(origins.index(origin)))
-                    print(origin)
                     payload = self._create_text(origin, destinations)
     
                     json_text = self._post_request(payload)
